@@ -4,7 +4,8 @@ import co.edu.uco.gestorgimnasio.crosscutting.exception.GestorGimnasioException;
 import co.edu.uco.gestorgimnasio.crosscutting.exception.concrete.ServiceGestorGimnasioException;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.DAOFactory;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.TipoDAOFactory;
-import co.edu.uco.gestorgimnasio.service.businesslogic.concrete.ejercicio.RegistrarEjercicioUseCase;
+import co.edu.uco.gestorgimnasio.service.businesslogic.concrete.ejercicio.ConsultarEjercicioUseCase;
+
 import co.edu.uco.gestorgimnasio.service.businesslogic.validator.concrete.ejercicio.RegistrarEjercicioValidator;
 import co.edu.uco.gestorgimnasio.service.domain.ejercicio.EjercicioDomain;
 import co.edu.uco.gestorgimnasio.service.dto.EjercicioDTO;
@@ -23,7 +24,7 @@ public final class ConsultarEjercicioFacade implements Facade<EjercicioDTO>{
 		try {
 			daoFactory.iniciarTransaccion();
 			
-			var useCase = new RegistrarEjercicioUseCase(daoFactory);
+			var useCase = new ConsultarEjercicioUseCase(daoFactory);
 			useCase.execute(domain);
 			
 			daoFactory.confirmarTransaccion();
@@ -33,8 +34,8 @@ public final class ConsultarEjercicioFacade implements Facade<EjercicioDTO>{
 			throw excepcion;
 		}catch (Exception exception) {
 			daoFactory.cancelarTransaccion();
-			var mensajeUsuario ="Se ha presentado un error inesperado tratando de registrar un nuevo cliente";
-			var mensajeTecnico = "Se ha presentado un error inesperado tratando de registrar un nuevo cliente. verigue la trasa completa ";
+			var mensajeUsuario ="Se ha presentado un error inesperado tratando de consultar el ejercicio";
+			var mensajeTecnico = "Se ha presentado un error inesperado tratando de consultar el ejercicio.Verifique la trasa completa ";
 			throw ServiceGestorGimnasioException.crear(exception,mensajeUsuario,mensajeTecnico);
 		}
 		finally {

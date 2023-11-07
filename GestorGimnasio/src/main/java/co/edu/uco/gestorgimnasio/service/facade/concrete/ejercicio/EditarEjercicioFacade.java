@@ -4,7 +4,8 @@ import co.edu.uco.gestorgimnasio.crosscutting.exception.GestorGimnasioException;
 import co.edu.uco.gestorgimnasio.crosscutting.exception.concrete.ServiceGestorGimnasioException;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.DAOFactory;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.TipoDAOFactory;
-import co.edu.uco.gestorgimnasio.service.businesslogic.concrete.ejercicio.RegistrarEjercicioUseCase;
+import co.edu.uco.gestorgimnasio.service.businesslogic.concrete.ejercicio.EditarEjercicioUseCase;
+
 import co.edu.uco.gestorgimnasio.service.businesslogic.validator.concrete.ejercicio.RegistrarEjercicioValidator;
 import co.edu.uco.gestorgimnasio.service.domain.ejercicio.EjercicioDomain;
 import co.edu.uco.gestorgimnasio.service.dto.EjercicioDTO;
@@ -23,7 +24,7 @@ public final class EditarEjercicioFacade implements Facade<EjercicioDTO>{
 		try {
 			daoFactory.iniciarTransaccion();
 			
-			var useCase = new RegistrarEjercicioUseCase(daoFactory);
+			var useCase = new EditarEjercicioUseCase(daoFactory);
 			useCase.execute(domain);
 			
 			daoFactory.confirmarTransaccion();
