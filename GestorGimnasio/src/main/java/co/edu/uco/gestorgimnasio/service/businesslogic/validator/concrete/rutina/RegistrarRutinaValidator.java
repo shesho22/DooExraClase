@@ -2,7 +2,6 @@ package co.edu.uco.gestorgimnasio.service.businesslogic.validator.concrete.rutin
 
 
 import co.edu.uco.gestorgimnasio.service.businesslogic.validator.Validator;
-
 import co.edu.uco.gestorgimnasio.service.domain.rutina.RutinaDomain;
 import co.edu.uco.gestorgimnasio.service.domain.rutina.rules.ListaEjerciciosValidationRule;
 import co.edu.uco.gestorgimnasio.service.domain.rutina.rules.NombreRutinaValidationRule;

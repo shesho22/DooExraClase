@@ -39,7 +39,6 @@ public final class RegistrarTipoIdentificacionUseCase implements UseCase<TipoIde
 	}
 
 	private final void validarNoExistenciaTipoIdentificacionConMismoNombre(final String nombre) {
-		//todo: lograr que esto no quede tan feo 
 		
 		var domain = TipoIdentificacionDomain.crear(null, null, nombre, false);
 		var entity=TipoIdentificacionEntityMapper.convertToEntity(domain);
@@ -52,7 +51,6 @@ public final class RegistrarTipoIdentificacionUseCase implements UseCase<TipoIde
 	}
 	
 	private final void validarNoExistenciaTipoIdentificacionConMismoCodigo(final String codigo) {
-		//todo: lograr que esto no quede tan feo 
 		
 		var domain = TipoIdentificacionDomain.crear(null, codigo, null, false);
 		var entity=TipoIdentificacionEntityMapper.convertToEntity(domain);
@@ -91,5 +89,7 @@ private final TipoIdentificacionDomain obtenerIdentificadorTipoIdentificacion(fi
 	private final TipoIdentificacionDAO getTipoIdentificacionDAO() {
 		return getFactoria().obtenerTipoIdentificacionDAO();
 	}
+
+
 
 }

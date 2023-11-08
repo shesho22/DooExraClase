@@ -1,5 +1,6 @@
 package co.edu.uco.gestorgimnasio.service.facade.concrete.tipoidentificacion;
 
+
 import co.edu.uco.gestorgimnasio.crosscutting.exception.GestorGimnasioException;
 import co.edu.uco.gestorgimnasio.crosscutting.exception.concrete.ServiceGestorGimnasioException;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.DAOFactory;
@@ -41,5 +42,6 @@ public final class RegistrarTipoIdentificacionFacade implements Facade<TipoIdent
 			daoFactory.cerrarConexion();
 		}
 	}
+
 	
 }

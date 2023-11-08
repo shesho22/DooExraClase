@@ -8,9 +8,7 @@ import co.edu.uco.gestorgimnasio.crosscutting.messages.CatalogoMensajes;
 import co.edu.uco.gestorgimnasio.crosscutting.messages.enumerator.CodigoMensaje;
 import co.edu.uco.gestorgimnasio.crosscutting.util.UtilObjeto;
 import co.edu.uco.gestorgimnasio.data.entity.EjercicioEntity;
-
 import co.edu.uco.gestorgimnasio.service.domain.ejercicio.EjercicioDomain;
-
 import co.edu.uco.gestorgimnasio.service.mapper.entity.EntityMapper;
 
 

@@ -1,5 +1,6 @@
 package co.edu.uco.gestorgimnasio.service.businesslogic.concrete.ejercicio;
 
+
 import java.util.UUID;
 
 import co.edu.uco.gestorgimnasio.crosscutting.exception.concrete.ServiceGestorGimnasioException;
@@ -10,11 +11,11 @@ import co.edu.uco.gestorgimnasio.service.businesslogic.UseCase;
 import co.edu.uco.gestorgimnasio.service.domain.ejercicio.EjercicioDomain;
 import co.edu.uco.gestorgimnasio.service.mapper.entity.concrete.EjercicioEntityMapper;
 
-public final class ConsultarEjercicioUseCase implements UseCase<EjercicioDomain> {
+public final class ConsultarPorIdEjercicioUseCase implements UseCase<EjercicioDomain> {
 
     private DAOFactory factoria;
 
-    public ConsultarEjercicioUseCase(final DAOFactory factoria) {
+    public ConsultarPorIdEjercicioUseCase(final DAOFactory factoria) {
         setFactoria(factoria);
     }
 
@@ -57,5 +58,7 @@ public final class ConsultarEjercicioUseCase implements UseCase<EjercicioDomain>
         return getFactoria().obtenerEjercicioDAO();
     }
 }
+
+
 
 

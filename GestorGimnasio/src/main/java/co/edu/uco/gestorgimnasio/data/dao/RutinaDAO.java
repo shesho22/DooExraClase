@@ -18,4 +18,5 @@ public interface RutinaDAO {
     Optional<RutinaEntity> consultarPorId(UUID id);
 
     List<RutinaEntity> consultar(RutinaEntity entity);
+
 }

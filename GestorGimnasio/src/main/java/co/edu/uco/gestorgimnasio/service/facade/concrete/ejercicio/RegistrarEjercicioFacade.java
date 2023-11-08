@@ -1,5 +1,6 @@
 package co.edu.uco.gestorgimnasio.service.facade.concrete.ejercicio;
 
+
 import co.edu.uco.gestorgimnasio.crosscutting.exception.GestorGimnasioException;
 import co.edu.uco.gestorgimnasio.crosscutting.exception.concrete.ServiceGestorGimnasioException;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.DAOFactory;
@@ -33,13 +34,14 @@ public final class RegistrarEjercicioFacade implements Facade<EjercicioDTO>{
 			throw excepcion;
 		}catch (Exception exception) {
 			daoFactory.cancelarTransaccion();
-			var mensajeUsuario ="Se ha presentado un error inesperado tratando de registrar un nuevo cliente";
-			var mensajeTecnico = "Se ha presentado un error inesperado tratando de registrar un nuevo cliente. verigue la trasa completa ";
+			var mensajeUsuario ="Se ha presentado un error inesperado tratando de registrar un nuevo ejercicio";
+			var mensajeTecnico = "Se ha presentado un error inesperado tratando de registrar un nuevo ejercicio. verigue la trasa completa ";
 			throw ServiceGestorGimnasioException.crear(exception,mensajeUsuario,mensajeTecnico);
 		}
 		finally {
 			daoFactory.cerrarConexion();
 		}
 	}
+
 	
 }

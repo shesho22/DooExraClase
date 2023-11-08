@@ -1,5 +1,6 @@
 package co.edu.uco.gestorgimnasio.service.businesslogic.concrete.tipoidentificacion;
 
+
 import java.util.UUID;
 
 import co.edu.uco.gestorgimnasio.crosscutting.exception.concrete.ServiceGestorGimnasioException;
@@ -10,11 +11,11 @@ import co.edu.uco.gestorgimnasio.service.businesslogic.UseCase;
 import co.edu.uco.gestorgimnasio.service.domain.tipoidentificacion.TipoIdentificacionDomain;
 import co.edu.uco.gestorgimnasio.service.mapper.entity.concrete.TipoIdentificacionEntityMapper;
 
-public final class ConsultarTipoIdentificacionUseCase implements UseCase<TipoIdentificacionDomain> {
+public final class ConsultarPorIdTipoIdentificacionUseCase implements UseCase<TipoIdentificacionDomain> {
 
     private DAOFactory factoria;
 
-    public ConsultarTipoIdentificacionUseCase(final DAOFactory factoria) {
+    public ConsultarPorIdTipoIdentificacionUseCase(final DAOFactory factoria) {
         setFactoria(factoria);
     }
 
@@ -27,7 +28,6 @@ public final class ConsultarTipoIdentificacionUseCase implements UseCase<TipoIde
 
         consultarTipoIdentificacionPorId(domain.getId());
     }
-
 
     private TipoIdentificacionDomain consultarTipoIdentificacionPorId(UUID id) {
         var resultado = getTipoIdentificacionDAO().consultarPorId(id);
@@ -57,5 +57,9 @@ public final class ConsultarTipoIdentificacionUseCase implements UseCase<TipoIde
     private final TipoIdentificacionDAO getTipoIdentificacionDAO() {
         return getFactoria().obtenerTipoIdentificacionDAO();
     }
+
+
 }
+
+
 

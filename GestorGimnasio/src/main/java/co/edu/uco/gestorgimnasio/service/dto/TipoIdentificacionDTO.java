@@ -59,5 +59,11 @@ public final class TipoIdentificacionDTO {
 		this.estado = estado;
 		return this;
 	}
+	public void copy(TipoIdentificacionDTO other) {
+		this.id = other.id;
+		this.codigo = other.codigo;
+		this.nombre = other.nombre;
+		this.estado = other.estado;
+	}
 	
 }

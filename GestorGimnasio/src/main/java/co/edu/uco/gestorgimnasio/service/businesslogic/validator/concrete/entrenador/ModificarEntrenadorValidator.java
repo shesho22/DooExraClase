@@ -17,7 +17,7 @@ public class ModificarEntrenadorValidator implements Validator<EntrenadorDomain>
 		super();
 	}
 	
-	public static final void ejecutarValidacion(final EntrenadorDomain data) {
+	public static final void ejecutar(final EntrenadorDomain data) {
 		instancia.execute(data);
 	}
 

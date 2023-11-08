@@ -7,10 +7,7 @@ import co.edu.uco.gestorgimnasio.crosscutting.util.UtilObjeto;
 import co.edu.uco.gestorgimnasio.data.dao.EjercicioDAO;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.DAOFactory;
 import co.edu.uco.gestorgimnasio.service.businesslogic.UseCase;
-import co.edu.uco.gestorgimnasio.service.businesslogic.validator.concrete.ejercicio.RegistrarEjercicioValidator;
 import co.edu.uco.gestorgimnasio.service.domain.ejercicio.EjercicioDomain;
-import co.edu.uco.gestorgimnasio.service.mapper.entity.concrete.EjercicioEntityMapper;
-
 
 public final class EliminarEjercicioUseCase implements UseCase<EjercicioDomain> {
 
@@ -22,36 +19,21 @@ public final class EliminarEjercicioUseCase implements UseCase<EjercicioDomain> 
 
     @Override
     public final void execute(EjercicioDomain domain) {
-        RegistrarEjercicioValidator.ejecutar(domain);
-        validarNoExistenciaEjercicioConMismoNombreDescripciom(domain.getNombre(),domain.getDescripcion());
-        domain = obtenerIdentificadorEjercicio(domain);
-        registrarNuevoEjercicio(domain);
+        validarExistenciaEjercicio(domain.getId());
+        eliminarEjercicio(domain);
     }
 
-    private void registrarNuevoEjercicio(final EjercicioDomain domain) {
-        var entity = EjercicioEntityMapper.convertToEntity(domain);
-        getEjercicioDAO().crear(entity);
+    private void eliminarEjercicio(final EjercicioDomain domain) {
+        EjercicioDAO ejercicioDAO = getEjercicioDAO();
+        ejercicioDAO.eliminar(domain.getId());
     }
 
-    private final void validarNoExistenciaEjercicioConMismoNombreDescripciom(final String nombre, final String descripcion) {
-    			var domain = EjercicioDomain.crear(null, descripcion, descripcion, null, null);
-    			var entity=EjercicioEntityMapper.convertToEntity(domain);
-    			var resultados = getEjercicioDAO().consultar(entity);
-    			
-    			if(!resultados.isEmpty()) {
-    				var mensajeUsuario = "Ya existe un ejercicio con el mismo nombre y descripcion";
-    				throw ServiceGestorGimnasioException.crear(mensajeUsuario);
-    			}
-    }
-
-
-
-    private final EjercicioDomain obtenerIdentificadorEjercicio(final EjercicioDomain domain) {
-        UUID uuid;
-        do {
-            uuid = UUID.randomUUID();
-        } while (getEjercicioDAO().consultarPorId(uuid).isPresent());
-        return EjercicioDomain.crear(uuid, domain.getNombre(), domain.getDescripcion(), domain.getSeries(), domain.getRepeticiones());
+    private final void validarExistenciaEjercicio(final UUID id) {
+        var resultado = getEjercicioDAO().consultarPorId(id);
+        if (resultado.isEmpty()) {
+            var mensajeUsuario = "No existe un ejercicio con el ID " + id;
+            throw ServiceGestorGimnasioException.crear(mensajeUsuario);
+        }
     }
 
     private final DAOFactory getFactoria() {
@@ -60,7 +42,7 @@ public final class EliminarEjercicioUseCase implements UseCase<EjercicioDomain> 
 
     private final void setFactoria(final DAOFactory factoria) {
         if (UtilObjeto.esNulo(factoria)) {
-            var mensajeUsuario = "Se ha presentado un problema tratando de llevar a cabo el resultado";
+            var mensajeUsuario = "Se ha presentado un problema tratando de llevar a cabo la eliminación del ejercicio";
             var mensajeTecnico = "Se ha presentado un problema en setFactoria";
             throw ServiceGestorGimnasioException.crear(mensajeUsuario, mensajeTecnico);
         }
@@ -71,4 +53,6 @@ public final class EliminarEjercicioUseCase implements UseCase<EjercicioDomain> 
         return getFactoria().obtenerEjercicioDAO();
     }
 }
+
+
 

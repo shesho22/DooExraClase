@@ -7,9 +7,7 @@ import co.edu.uco.gestorgimnasio.crosscutting.util.UtilObjeto;
 import co.edu.uco.gestorgimnasio.data.dao.EntrenadorDAO;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.DAOFactory;
 import co.edu.uco.gestorgimnasio.service.businesslogic.UseCase;
-import co.edu.uco.gestorgimnasio.service.businesslogic.validator.concrete.entrenador.RegistrarEntrenadorValidator;
 import co.edu.uco.gestorgimnasio.service.domain.entrenador.EntrenadorDomain;
-import co.edu.uco.gestorgimnasio.service.domain.tipoidentificacion.TipoIdentificacionDomain;
 import co.edu.uco.gestorgimnasio.service.mapper.entity.concrete.EntrenadorEntityMapper;
 
 public final class ConsultarEntrenadorUseCase implements UseCase<EntrenadorDomain> {
@@ -21,35 +19,25 @@ public final class ConsultarEntrenadorUseCase implements UseCase<EntrenadorDomai
     }
 
     @Override
-    public final void execute(EntrenadorDomain domain) {
-        RegistrarEntrenadorValidator.ejecutar(domain);
-        validarNoExistenciaEntrenadorConMismoDocumentoIdentificacion(domain.getTipoidentificacion(),domain.getIdentificacion());
-        domain = obtenerIdentificadorEntrenador(domain);
-        registrarNuevoEntrenador(domain);
+    public void execute(EntrenadorDomain domain) {
+        if (domain == null || domain.getId() == null) {
+            var mensajeUsuario = "Se requiere un objeto EntrenadorDomain con un ID válido";
+            throw ServiceGestorGimnasioException.crear(mensajeUsuario);
+        }
+
+        consultarEntrenadorPorId(domain.getId());
     }
 
-    private void registrarNuevoEntrenador(final EntrenadorDomain domain) {
-        var entity = EntrenadorEntityMapper.convertToEntity(domain);
-        getEntrenadorDAO().crear(entity);
-    }
+    private EntrenadorDomain consultarEntrenadorPorId(UUID id) {
+        var resultado = getEntrenadorDAO().consultarPorId(id);
 
-    private final void validarNoExistenciaEntrenadorConMismoDocumentoIdentificacion(final TipoIdentificacionDomain tipoIdentificacion, final String identificacion) {
-    	var domain = EntrenadorDomain.crear(null, tipoIdentificacion, identificacion, null, null, null, null);
-		var entity=EntrenadorEntityMapper.convertToEntity(domain);
-		var resultados = getEntrenadorDAO().consultar(entity);
-		
-		if(!resultados.isEmpty()) {
-			var mensajeUsuario = "Ya existe un entrenador con el mismo tipo de documento y documento";
-			throw ServiceGestorGimnasioException.crear(mensajeUsuario);
-		}
-    }
+        if (resultado.isEmpty()) {
+            var mensajeUsuario = "No existe un entrenador con el ID " + id;
+            throw ServiceGestorGimnasioException.crear(mensajeUsuario);
+        }
 
-    private final EntrenadorDomain obtenerIdentificadorEntrenador(final EntrenadorDomain domain) {
-        UUID uuid;
-        do {
-            uuid = UUID.randomUUID();
-        } while (getEntrenadorDAO().consultarPorId(uuid).isPresent());
-        return EntrenadorDomain.crear(uuid, domain.getTipoidentificacion(), domain.getIdentificacion(), domain.getNombreCompleto(), domain.getCorreoElectornico(), domain.getNumeroTelefonoMovil(), domain.getFechaNacimiento());
+        var entity = resultado.get();
+        return EntrenadorEntityMapper.convertToDomain(entity);
     }
 
     private final DAOFactory getFactoria() {
@@ -58,7 +46,7 @@ public final class ConsultarEntrenadorUseCase implements UseCase<EntrenadorDomai
 
     private final void setFactoria(final DAOFactory factoria) {
         if (UtilObjeto.esNulo(factoria)) {
-            var mensajeUsuario = "Se ha presentado un problema tratando de llevar a cabo el resultado";
+            var mensajeUsuario = "Se ha presentado un problema tratando de llevar a cabo la consulta del entrenador";
             var mensajeTecnico = "Se ha presentado un problema en setFactoria";
             throw ServiceGestorGimnasioException.crear(mensajeUsuario, mensajeTecnico);
         }
