@@ -1,4 +1,4 @@
-package co.edu.uco.gestorgimnasio.controller.ejercicio.impl;
+package co.edu.uco.gestorgimnasio.controller.rutina.impl;
 
 import java.util.UUID;
 
@@ -15,36 +15,34 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.uco.gestorgimnasio.controller.ejercicio.EjercicioController;
+
+import co.edu.uco.gestorgimnasio.controller.rutina.RutinaController;
 import co.edu.uco.gestorgimnasio.controller.support.response.Respuesta;
 import co.edu.uco.gestorgimnasio.crosscutting.exception.GestorGimnasioException;
 
-import co.edu.uco.gestorgimnasio.service.dto.EjercicioDTO;
-import co.edu.uco.gestorgimnasio.service.facade.concrete.ejercicio.ConsultarEjercicioFacade;
-import co.edu.uco.gestorgimnasio.service.facade.concrete.ejercicio.EditarEjercicioFacade;
+import co.edu.uco.gestorgimnasio.service.dto.RutinaDTO;
 
-import co.edu.uco.gestorgimnasio.service.facade.concrete.ejercicio.RegistrarEjercicioFacade;
+import co.edu.uco.gestorgimnasio.service.facade.concrete.rutina.ConsultarRutinaFacade;
+import co.edu.uco.gestorgimnasio.service.facade.concrete.rutina.EditarRutinaFacade;
+import co.edu.uco.gestorgimnasio.service.facade.concrete.rutina.RegistrarRutinaFacade;
 
 @RestController
-@RequestMapping("/api/v1/ejercicio")
-public final class EjercicioControllerImpl implements EjercicioController {
-
-	public static final Logger lOGGER = LoggerFactory.getLogger(EjercicioControllerImpl.class);
-
+@RequestMapping("/api/v1/rutina")
+public final class RutinaControllerImpl implements RutinaController{
+	public static final Logger lOGGER = LoggerFactory.getLogger(RutinaControllerImpl.class);
+	
 	@Override
 	@GetMapping("/dummy")
-	public final EjercicioDTO obtenerDummy() {
+	public final RutinaDTO obtenerDummy() {
 		lOGGER.info("El dummy se ha creado correctamente");
-		return EjercicioDTO.crear();
+		return RutinaDTO.crear();
 	}
-
-	@Override
 	@GetMapping
-	public final ResponseEntity<Respuesta<EjercicioDTO>> consultar(@RequestBody EjercicioDTO dto) {
-		final Respuesta<EjercicioDTO> respuesta = new Respuesta<>();
+	public final ResponseEntity<Respuesta<RutinaDTO>> consultar(@RequestBody RutinaDTO dto) {
+		final Respuesta<RutinaDTO> respuesta = new Respuesta<>();
 		HttpStatus codigoHttpStatus = HttpStatus.BAD_REQUEST;
 		try {
-			final ConsultarEjercicioFacade facade = new ConsultarEjercicioFacade();
+			final ConsultarRutinaFacade facade = new ConsultarRutinaFacade();
 			facade.execute(dto);
 			codigoHttpStatus = HttpStatus.OK;
 			respuesta.getMensajes().add("El tipo de identificacion fue consultado exitosamente");
@@ -63,11 +61,9 @@ public final class EjercicioControllerImpl implements EjercicioController {
 		return new ResponseEntity<>(respuesta, codigoHttpStatus);
 
 	}
-
 	@Override
 	@GetMapping("/{id}")
-	public final ResponseEntity<Respuesta<UUID>> consultarPorId(@PathVariable("id") UUID id) {
-
+	public final ResponseEntity<Respuesta<UUID>> consultarPorId(@PathVariable("id")UUID id) {
 		final Respuesta<UUID> respuesta = new Respuesta<>();
 		HttpStatus codigoHttpStatus = HttpStatus.BAD_REQUEST;
 		try {
@@ -89,15 +85,14 @@ public final class EjercicioControllerImpl implements EjercicioController {
 		return new ResponseEntity<>(respuesta, codigoHttpStatus);
 
 	}
-
+	
 	
 	@PostMapping
-	@Override
-	public final ResponseEntity<Respuesta<EjercicioDTO>> registrar(@RequestBody EjercicioDTO dto) {
-		final Respuesta<EjercicioDTO> respuesta = new Respuesta<>();
+	public final ResponseEntity<Respuesta<RutinaDTO>> registrar(@RequestBody RutinaDTO dto) {
+		final Respuesta<RutinaDTO> respuesta = new Respuesta<>();
 		HttpStatus codigoHttp = HttpStatus.BAD_REQUEST;
 		try {
-			final RegistrarEjercicioFacade facade = new RegistrarEjercicioFacade();
+			final RegistrarRutinaFacade facade = new RegistrarRutinaFacade();
 			facade.execute(dto);
 			codigoHttp = HttpStatus.OK;
 			respuesta.getMensajes().add("El ejercicio fue registrado existosamente...");
@@ -117,17 +112,14 @@ public final class EjercicioControllerImpl implements EjercicioController {
 
 		return new ResponseEntity<>(respuesta, codigoHttp);
 	}
-
 	@PutMapping("/{id}")
 	@Override
-	public final ResponseEntity<Respuesta<EjercicioDTO>> modificar(@PathVariable("id") UUID id,
-			@RequestBody EjercicioDTO dto) {
-
+	public final ResponseEntity<Respuesta<RutinaDTO>> modificar(@PathVariable("id") UUID id,@RequestBody RutinaDTO dto) {
 		dto.setId(id);
-		final Respuesta<EjercicioDTO> respuesta = new Respuesta<>();
+		final Respuesta<RutinaDTO> respuesta = new Respuesta<>();
 		HttpStatus codigoHttpStatus = HttpStatus.BAD_REQUEST;
 		try {
-			final EditarEjercicioFacade facade = new EditarEjercicioFacade();
+			final EditarRutinaFacade facade = new EditarRutinaFacade();
 			facade.execute(dto);
 			codigoHttpStatus = HttpStatus.OK;
 			respuesta.getMensajes().add("El tipo de identificacion fue modifcado exitosamente");
@@ -149,11 +141,11 @@ public final class EjercicioControllerImpl implements EjercicioController {
 
 	@DeleteMapping("/{id}")
 	@Override
-	public final ResponseEntity<Respuesta<UUID>> eliminar(@PathVariable("id") UUID id) {
+	public final ResponseEntity<Respuesta<UUID>> eliminar(@PathVariable("id")UUID id) {
 		final Respuesta<UUID> respuesta = new Respuesta<>();
 		HttpStatus codigoHttpStatus = HttpStatus.BAD_REQUEST;
 		try {
-			
+
 			codigoHttpStatus = HttpStatus.OK;
 			respuesta.getMensajes().add("El tipo de identificacion fue eliminado exitosamente");
 			lOGGER.info("El tipo de identificacion fue registrado exitosamente");

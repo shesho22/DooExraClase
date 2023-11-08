@@ -1,4 +1,4 @@
-package co.edu.uco.gestorgimnasio.controller.ejercicio.impl;
+package co.edu.uco.gestorgimnasio.controller.tipoidentificacion.impl;
 
 import java.util.UUID;
 
@@ -15,36 +15,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.uco.gestorgimnasio.controller.ejercicio.EjercicioController;
+import co.edu.uco.gestorgimnasio.controller.ejercicio.impl.EjercicioControllerImpl;
 import co.edu.uco.gestorgimnasio.controller.support.response.Respuesta;
+import co.edu.uco.gestorgimnasio.controller.tipoidentificacion.TipoIdentificacionController;
 import co.edu.uco.gestorgimnasio.crosscutting.exception.GestorGimnasioException;
 
-import co.edu.uco.gestorgimnasio.service.dto.EjercicioDTO;
-import co.edu.uco.gestorgimnasio.service.facade.concrete.ejercicio.ConsultarEjercicioFacade;
-import co.edu.uco.gestorgimnasio.service.facade.concrete.ejercicio.EditarEjercicioFacade;
+import co.edu.uco.gestorgimnasio.service.dto.TipoIdentificacionDTO;
 
-import co.edu.uco.gestorgimnasio.service.facade.concrete.ejercicio.RegistrarEjercicioFacade;
+import co.edu.uco.gestorgimnasio.service.facade.concrete.tipoidentificacion.ConsultarTipoIdentificacionFacade;
+import co.edu.uco.gestorgimnasio.service.facade.concrete.tipoidentificacion.EditarTipoIdentificacionFacade;
+import co.edu.uco.gestorgimnasio.service.facade.concrete.tipoidentificacion.RegistrarTipoIdentificacionFacade;
 
 @RestController
-@RequestMapping("/api/v1/ejercicio")
-public final class EjercicioControllerImpl implements EjercicioController {
-
+@RequestMapping("/api/v1/tipoidentificacion")
+public final class TipoIdentificacionControllerImpl implements TipoIdentificacionController{
+	
 	public static final Logger lOGGER = LoggerFactory.getLogger(EjercicioControllerImpl.class);
-
-	@Override
-	@GetMapping("/dummy")
-	public final EjercicioDTO obtenerDummy() {
-		lOGGER.info("El dummy se ha creado correctamente");
-		return EjercicioDTO.crear();
+	@GetMapping("/saludo")
+	public String saludo() {
+		return "hola";
 	}
-
+	
+	@GetMapping("/dummy")
+	public final TipoIdentificacionDTO obtenerDummy() {
+		lOGGER.info("El dummy se ha creado correctamente");
+		return TipoIdentificacionDTO.crear();
+	}
+	
 	@Override
 	@GetMapping
-	public final ResponseEntity<Respuesta<EjercicioDTO>> consultar(@RequestBody EjercicioDTO dto) {
-		final Respuesta<EjercicioDTO> respuesta = new Respuesta<>();
+	public final ResponseEntity<Respuesta<TipoIdentificacionDTO>> consultar(@RequestBody TipoIdentificacionDTO dto) {
+		final Respuesta<TipoIdentificacionDTO> respuesta = new Respuesta<>();
 		HttpStatus codigoHttpStatus = HttpStatus.BAD_REQUEST;
 		try {
-			final ConsultarEjercicioFacade facade = new ConsultarEjercicioFacade();
+			final ConsultarTipoIdentificacionFacade facade = new ConsultarTipoIdentificacionFacade();
 			facade.execute(dto);
 			codigoHttpStatus = HttpStatus.OK;
 			respuesta.getMensajes().add("El tipo de identificacion fue consultado exitosamente");
@@ -63,11 +67,11 @@ public final class EjercicioControllerImpl implements EjercicioController {
 		return new ResponseEntity<>(respuesta, codigoHttpStatus);
 
 	}
-
+	
+	
 	@Override
 	@GetMapping("/{id}")
-	public final ResponseEntity<Respuesta<UUID>> consultarPorId(@PathVariable("id") UUID id) {
-
+	public final ResponseEntity<Respuesta<UUID>> consultarPorId(@PathVariable("id")UUID id) {
 		final Respuesta<UUID> respuesta = new Respuesta<>();
 		HttpStatus codigoHttpStatus = HttpStatus.BAD_REQUEST;
 		try {
@@ -89,15 +93,15 @@ public final class EjercicioControllerImpl implements EjercicioController {
 		return new ResponseEntity<>(respuesta, codigoHttpStatus);
 
 	}
-
+	
 	
 	@PostMapping
 	@Override
-	public final ResponseEntity<Respuesta<EjercicioDTO>> registrar(@RequestBody EjercicioDTO dto) {
-		final Respuesta<EjercicioDTO> respuesta = new Respuesta<>();
+	public final ResponseEntity<Respuesta<TipoIdentificacionDTO>> registrar(@RequestBody TipoIdentificacionDTO dto) {
+		final Respuesta<TipoIdentificacionDTO> respuesta = new Respuesta<>();
 		HttpStatus codigoHttp = HttpStatus.BAD_REQUEST;
 		try {
-			final RegistrarEjercicioFacade facade = new RegistrarEjercicioFacade();
+			final RegistrarTipoIdentificacionFacade facade = new RegistrarTipoIdentificacionFacade();
 			facade.execute(dto);
 			codigoHttp = HttpStatus.OK;
 			respuesta.getMensajes().add("El ejercicio fue registrado existosamente...");
@@ -118,16 +122,15 @@ public final class EjercicioControllerImpl implements EjercicioController {
 		return new ResponseEntity<>(respuesta, codigoHttp);
 	}
 
+	
 	@PutMapping("/{id}")
 	@Override
-	public final ResponseEntity<Respuesta<EjercicioDTO>> modificar(@PathVariable("id") UUID id,
-			@RequestBody EjercicioDTO dto) {
-
+	public final ResponseEntity<Respuesta<TipoIdentificacionDTO>> modificar(@PathVariable("id") UUID id,@RequestBody TipoIdentificacionDTO dto) {
 		dto.setId(id);
-		final Respuesta<EjercicioDTO> respuesta = new Respuesta<>();
+		final Respuesta<TipoIdentificacionDTO> respuesta = new Respuesta<>();
 		HttpStatus codigoHttpStatus = HttpStatus.BAD_REQUEST;
 		try {
-			final EditarEjercicioFacade facade = new EditarEjercicioFacade();
+			final EditarTipoIdentificacionFacade facade = new EditarTipoIdentificacionFacade();
 			facade.execute(dto);
 			codigoHttpStatus = HttpStatus.OK;
 			respuesta.getMensajes().add("El tipo de identificacion fue modifcado exitosamente");
@@ -147,9 +150,11 @@ public final class EjercicioControllerImpl implements EjercicioController {
 
 	}
 
+	
+
 	@DeleteMapping("/{id}")
 	@Override
-	public final ResponseEntity<Respuesta<UUID>> eliminar(@PathVariable("id") UUID id) {
+	public final ResponseEntity<Respuesta<UUID>> eliminar(@PathVariable("id")UUID id) {
 		final Respuesta<UUID> respuesta = new Respuesta<>();
 		HttpStatus codigoHttpStatus = HttpStatus.BAD_REQUEST;
 		try {
@@ -171,4 +176,5 @@ public final class EjercicioControllerImpl implements EjercicioController {
 		return new ResponseEntity<>(respuesta, codigoHttpStatus);
 
 	}
+	
 }

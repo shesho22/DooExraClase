@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@Tag(name = "TipoIdentificacionAPI", description = "Ofrece las api de consumo para todas las operaciones con el Ejercicio")
+@Tag(name = "EjercicioAPI", description = "Ofrece las api de consumo para todas las operaciones con el Ejercicio")
 public interface EjercicioController {
 
 	@Operation(summary="Obtener dummy", description="Servicio encargadao de obtener la estructura de todos los ti de JSON basica para todas las operaciones de Tipo Identificacion")
@@ -38,5 +38,5 @@ public interface EjercicioController {
 		
 	
 	@Operation(summary="Eliminar", description="Servicio encargado de eliminar de forma definitiva la informacion correspondiente a la Id enviado como parametro")
-	ResponseEntity<Respuesta<UUID>> eliminar(@PathVariable("id") UUID id,@RequestBody EjercicioDTO dto);
+	ResponseEntity<Respuesta<UUID>> eliminar(@PathVariable("id") UUID id);
 }
