@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>WorkBot - Rutina En Desarrollo...</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="index.html">WorkBot</a>
+            </div>
+        </nav>
+        <header class="bg-dark py-5 mb-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Rutina ─ <span id="routine-name"></span></h1>
+                    <p class="lead fw-normal text-white-50 mb-0">... ¡Vamos a entrenar!</p>
+                </div>
+            </div>
+        </header>
+		<div class="container">
+			<!--<h2><span id="routine-name"></span></h2>-->
+			<table class="table mt-4">
+				<thead>
+					<tr>
+						<th>Ejercicio</th>
+						<th>Descripcion</th>
+						<th>Series</th>
+						<th>Repeticiones</th>
+						<th>Completado</th>
+					</tr>
+				</thead>
+				<tbody id="routine-list">
+
+				</tbody>
+			</table>
+			<button id="finish-button" class="btn btn-primary mt-3 mb-5" disabled>¡Terminado!</button>
+		</div>
+		
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Sergio Arias R. / Steven Alejandro R. / Jacobo Jaramillo J. - 2023</p></div>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+		<script>
+			//const routineName = "Pesos";
+			const routines = JSON.parse(sessionStorage.getItem('currentRoutineData'));
+			routines.exercises.forEach((exercise) => {
+				exercise.complete = false;
+			});
+			
+			document.getElementById("routine-name").textContent = routines.name;
+			
+			/*
+			const routineTasks = [
+				{
+					exercise: "Flexiones",
+					description: "Coloca las manos a la anchura de los hombros y mantén el cuerpo en línea recta.",
+					series: 3,
+					repetitions: 15,
+					completed: false,
+				},
+				{
+					exercise: "Sentadillas",
+					description: "Ponte de pie con los pies separados a la altura de los hombros y ponte en cuclillas, manteniendo la espalda recta.",
+					series: 3,
+					repetitions: 12,
+					completed: false,
+				},
+			];
+			*/
+
+			function populateRoutineTasks() {
+				const routineList = document.getElementById("routine-list");
+				routines.exercises.forEach((exercise, index) => {
+					const row = document.createElement("tr");
+					row.innerHTML = `
+						<td>${exercise.name}</td>
+						<td>${exercise.description}</td>
+						<td>${exercise.series}</td>
+						<td>${exercise.repetitions}</td>
+						<td>
+							<input type="checkbox" id="task-checkbox-${index}" ${exercise.completed ? 'checked' : ''} ${exercise.completed ? 'disabled' : ''}>
+						</td>
+					`;
+					routineList.appendChild(row);
+
+					const checkbox = row.querySelector(`#task-checkbox-${index}`);
+					checkbox.addEventListener("change", () => {
+						if (!exercise.completed) {
+							exercise.completed = true;
+							checkbox.disabled = true;
+							checkFinishButton();
+						}
+					});
+				});
+
+				checkFinishButton();
+			}
+
+			function checkFinishButton() {
+				const allCompleted = routines.exercises.every((exercise) => exercise.completed);
+				const finishButton = document.getElementById("finish-button");
+				finishButton.disabled = !allCompleted;
+			}
+
+			document.getElementById("finish-button").addEventListener("click", () => {
+				window.location.href = "index.html";
+			});
+
+			populateRoutineTasks();
+		</script>
+    </body>
+</html>
