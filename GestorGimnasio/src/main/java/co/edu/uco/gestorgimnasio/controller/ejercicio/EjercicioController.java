@@ -112,8 +112,8 @@ public final class EjercicioController {
 	
 	
 	@PostMapping
-	public final EjercicioDTO registrar(@RequestBody EjercicioDTO dto) {
-	    Respuesta<TipoIdentificacionDTO> respuesta = new Respuesta<>();
+	public final ResponseEntity<Respuesta<EjercicioDTO>> registrar(@RequestBody EjercicioDTO dto) {
+	    Respuesta<EjercicioDTO> respuesta = new Respuesta<>();
 	    HttpStatus codigoHttp = HttpStatus.BAD_REQUEST;
 	    try {
 	        RegistrarEjercicioFacade facade = new RegistrarEjercicioFacade();
@@ -131,7 +131,7 @@ public final class EjercicioController {
 	        throw ControllerGestorGimnasioException.crear(excepcion, mensajeUsuario, mensajeTecnico);
 	    }
 
-	    return dto;
+	    return new ResponseEntity<>(respuesta, codigoHttp);
 	}
 
 	

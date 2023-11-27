@@ -8,38 +8,49 @@ import co.edu.uco.gestorgimnasio.crosscutting.exception.concrete.CrossCuttingGes
 import co.edu.uco.gestorgimnasio.crosscutting.exception.concrete.DataGestorGimnasioException;
 import co.edu.uco.gestorgimnasio.crosscutting.messages.CatalogoMensajes;
 import co.edu.uco.gestorgimnasio.crosscutting.messages.enumerator.CodigoMensaje;
+
 import co.edu.uco.gestorgimnasio.crosscutting.util.UtilSQL;
 import co.edu.uco.gestorgimnasio.data.dao.EjercicioDAO;
 import co.edu.uco.gestorgimnasio.data.dao.EntrenadorDAO;
 import co.edu.uco.gestorgimnasio.data.dao.RutinaDAO;
 import co.edu.uco.gestorgimnasio.data.dao.TipoIdentificacionDAO;
 import co.edu.uco.gestorgimnasio.data.dao.concrete.sqlserver.EjercicioSQLServerDAO;
-import co.edu.uco.gestorgimnasio.data.dao.concrete.sqlserver.TipoIdentificacionSQLServerDAO;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.DAOFactory;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.concrete.sqlserver.EntrenadorSQLServerDAO;
 import co.edu.uco.gestorgimnasio.data.dao.daofactory.concrete.sqlserver.RutinaSQLServerDAO;
+import co.edu.uco.gestorgimnasio.data.dao.daofactory.concrete.sqlserver.TipoIdentificacionSQLServerDAO;
 
-public final class SQLServerDAOFactory extends DAOFactory {
+public class SQLServerDAOFactory extends DAOFactory {
 
 	private Connection conexion;
 
 	public SQLServerDAOFactory() {
+
 		abrirConexion();
 	}
 
 	@Override
 	protected final void abrirConexion() {
+
 		try {
-			var cadenaConexion = "jdbc:sqlserver://localhost:1433;encrypt=false;databaseName=GestorGimansio;user=sa;password=12456";
-			conexion = DriverManager.getConnection(cadenaConexion);
+			Class.forName("org.postgresql.Driver");
+			final String url = "jdbc:postgresql://localhost:5432/gestor";
+			final String usuario = "postgres";
+			final String clave = "";
+			UtilSQL.conexionAbierta(conexion);
+
+			conexion = DriverManager.getConnection(url, usuario, clave);
+			System.out.println("Se ha conectado a la base de datos");
 		} catch (final SQLException excepcion) {
-			var mensajeUsuario = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004);
-			var mensajeTecnico = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000027);
-			throw DataGestorGimnasioException.crear(excepcion, mensajeUsuario, mensajeTecnico);
+
+			throw DataGestorGimnasioException.crear(excepcion,
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004),
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000027));
 		} catch (final Exception excepcion) {
-			var mensajeUsuario = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004);
-			var mensajeTecnico = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000028);
-			throw DataGestorGimnasioException.crear(excepcion, mensajeUsuario, mensajeTecnico);
+
+			throw DataGestorGimnasioException.crear(excepcion,
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004),
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000028));
 		}
 	}
 
@@ -64,48 +75,48 @@ public final class SQLServerDAOFactory extends DAOFactory {
 	}
 
 	@Override
-	public final EntrenadorDAO obtenerEntrenadorDAO() {
-
-		if (!UtilSQL.conexionAbierta(conexion)) {
-			var mensajeUsuario = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004);
-			var mensajeTecnico = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000033);
-			throw CrossCuttingGestorGimnasioException.crear(mensajeUsuario, mensajeTecnico);
-		}
-
-		return new EntrenadorSQLServerDAO(conexion);
-	}
-
-	@Override
-	public final TipoIdentificacionDAO obtenerTipoIdentificacionDAO() {
-
-		if (!UtilSQL.conexionAbierta(conexion)) {
-			var mensajeUsuario = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004);
-			var mensajeTecnico = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000034);
-			throw CrossCuttingGestorGimnasioException.crear(mensajeUsuario, mensajeTecnico);
-		}
-
-		return new TipoIdentificacionSQLServerDAO(conexion);
-	}
-
-	@Override
 	public EjercicioDAO obtenerEjercicioDAO() {
+
 		if (!UtilSQL.conexionAbierta(conexion)) {
-			var mensajeUsuario = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004);
-			var mensajeTecnico = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000033);
-			throw CrossCuttingGestorGimnasioException.crear(mensajeUsuario, mensajeTecnico);
+
+			throw CrossCuttingGestorGimnasioException.crear(
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004),
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000034));
 		}
 
 		return new EjercicioSQLServerDAO(conexion);
 	}
 
 	@Override
+	public EntrenadorDAO obtenerEntrenadorDAO() {
+		if (!UtilSQL.conexionAbierta(conexion)) {
+
+			throw CrossCuttingGestorGimnasioException.crear(
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004),
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000034));
+		}
+		return new EntrenadorSQLServerDAO(conexion);
+	}
+
+	@Override
+	public TipoIdentificacionDAO obtenerTipoIdentificacionDAO() {
+		if (!UtilSQL.conexionAbierta(conexion)) {
+
+			throw CrossCuttingGestorGimnasioException.crear(
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004),
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000034));
+		}
+		return new TipoIdentificacionSQLServerDAO(conexion);
+	}
+
+	@Override
 	public RutinaDAO obtenerRutinaDAO() {
 		if (!UtilSQL.conexionAbierta(conexion)) {
-			var mensajeUsuario = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004);
-			var mensajeTecnico = CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000034);
-			throw CrossCuttingGestorGimnasioException.crear(mensajeUsuario, mensajeTecnico);
-		}
 
+			throw CrossCuttingGestorGimnasioException.crear(
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000004),
+					CatalogoMensajes.obtenerContenidoMensaje(CodigoMensaje.M0000000034));
+		}
 		return new RutinaSQLServerDAO(conexion);
 	}
 }

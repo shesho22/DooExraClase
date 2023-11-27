@@ -5,8 +5,8 @@ public class UtilTexto {
 	
 	public static final String VACIO = "";
 	private static final String PATTERN_SOLO_LETRAS = "^[a-zA-ZáéíóúÁÉÍÓÚ ]+$";
-	private static final String PATTERN_SOLO_LETRAS_DIGITOS_ESPACIOS = "^[a-zA-ZáéíóúÁÉÍÓÚ 1234567890]+$";
-	private static final String SOLO_NUMEROS="[0123456789]";
+	private static final String PATTERN_SOLO_LETRAS_DIGITOS_ESPACIOS = "^[a-zA-ZáéíóúÁÉÍÓÚ1234567890 ]+$";
+	private static final String SOLO_NUMEROS="[0123456789 ]";
 	
 	private UtilTexto() {
 		super();

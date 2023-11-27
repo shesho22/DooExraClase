@@ -14,7 +14,7 @@ public final class TipoIdentificacionDTO {
 	
 	
 	public TipoIdentificacionDTO() {
-		setId(UtilUUID.getDefaultUUID(id)); 
+		setId(UtilUUID.getNewUUID()); 
 		setCodigo(UtilTexto.VACIO);
 		setNombre(UtilTexto.VACIO);
 		setEstado(false);
